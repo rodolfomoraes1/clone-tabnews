@@ -11,18 +11,18 @@ export default async function migrations(request, response) {
   }
 
   let dbClient;
-  const defaultMigrationOptions = {
-    dbClient,
-    databaseUrl: process.env.DATABASE_URL,
-    dryRun: true,
-    dir: join("infra", "migrations"),
-    direction: "up",
-    verbose: true,
-    migrationsTable: "pgmigrations",
-  };
-
   try {
     dbClient = await database.getNewClient();
+    const defaultMigrationOptions = {
+      dbClient,
+      databaseUrl: process.env.DATABASE_URL,
+      dryRun: true,
+      dir: join("infra", "migrations"),
+      direction: "up",
+      verbose: true,
+      migrationsTable: "pgmigrations",
+    };
+
     if (request.method === "GET") {
       const pendingMigrations = await migrationRunner({
         ...defaultMigrationOptions,
